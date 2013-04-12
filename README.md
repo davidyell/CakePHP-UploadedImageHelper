@@ -6,8 +6,10 @@ Cake 2.x
 Upload plugin - https://github.com/josegonzalez/upload
 
 ##Installation
-Copy the helper file into your `app/View/Helper` folder, and then add it to your helpers array in your controller.  
-`public $helpers = array('UploadedImage');`  
+You will need to install the plugin into `app/Plugin/UploadedImage` and then activate it in your `app/Config/bootstrap.php` with `CakePlugin::load('UploadedImage');` unless you are already using `loadAll()`.  
+
+Then add the helper file into your helpers array in your controller.  
+`public $helpers = array('UploadedImage.UploadedImage');`  
 
 The helper take some settings, which you can find in the source `$settings` property. These can be overwritten by passing new settings into the helper when you add it to the controller.  
 ```php
