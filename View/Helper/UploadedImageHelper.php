@@ -54,13 +54,18 @@ class UploadedImageHelper extends AppHelper{
  * but with a link to view the original
  */
     public function display() {
-
         if (isset($this->request->data[$this->Model][$this->settings['field']]) && !empty($this->request->data[$this->Model][$this->settings['field']]) && !is_array($this->request->data[$this->Model][$this->settings['field']])) {
+
+            $imagePath = '/files/' . strtolower($this->Model) . '/' . $this->settings['field'] . '/' . $this->request->data[$this->Model][$this->settings['dir']] . '/' . $this->request->data[$this->Model][$this->settings['field']];
+
             $image = $this->settings['label'];
             $image .= $this->Html->link(
-                    $this->Html->image('../files/' . strtolower($this->Model) . '/' . $this->settings['field'] . '/' . $this->request->data[$this->Model][$this->settings['dir']] . '/' . $this->request->data[$this->Model][$this->settings['field']], array('width' => $this->settings['thumbWidth'] . 'px')),
-                    '/files/' . strtolower($this->Model) . '/' . $this->settings['field'] . '/' . $this->request->data[$this->Model][$this->settings['dir']] . '/' . $this->request->data[$this->Model][$this->settings['field']],
-                    array('target' => '_blank', 'escape' => false, 'title' => 'Click to view original (opens in new window)')
+                    $this->Html->image(
+                            $imagePath,
+                            array('width' => $this->getThumbnailSize($imagePath))
+                        ),
+                        $imagePath,
+                        array('target' => '_blank', 'escape' => false, 'title' => 'Click to view original (opens in new window)')
                     );
         } else {
             $image = '';
@@ -68,6 +73,23 @@ class UploadedImageHelper extends AppHelper{
 
         echo $this->Form->input($this->settings['field'], array('type' => 'file', 'before' => $image));
         echo $this->Form->input($this->settings['dir'], array('type' => 'hidden'));
+    }
+
+/**
+ * Work out if the image being displayed is smaller than the configured
+ * thumbnail size.
+ *
+ * @param string $file A path to an image file
+ *
+ * @return int A size in pixels
+ */
+    private function getThumbnailSize($file) {
+        $dimensions = getimagesize(APP.WEBROOT_DIR.$file);
+        if ($dimensions[0] <= $this->settings['thumbWidth']) {
+            return $dimensions[0] . 'px';
+        }
+
+        return $this->settings['thumbWidth'] . 'px';
     }
 
 }
