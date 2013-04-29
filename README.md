@@ -20,3 +20,5 @@ public $helpers = array(
     )
 );
 ```
+## Todo
+* Change the helper so that it reads the model configuration to save on configuring it
