@@ -8,7 +8,7 @@
  * @related Plugin https://github.com/josegonzalez/upload
  */
 
-App::uses('AppHelper', 'View');
+App::uses('AppHelper', 'View/Helper');
 
 class UploadedImageHelper extends AppHelper{
 
@@ -33,6 +33,8 @@ class UploadedImageHelper extends AppHelper{
         'thumbWidth' => 200
     );
 
+    public $pathPattern = 'files/{model}/{field}/{imageDir}/{imageFile}';
+
 /**
  * Startup the helper
  *
@@ -47,6 +49,10 @@ class UploadedImageHelper extends AppHelper{
         }
 
         $this->Model = Inflector::singularize($View->name);
+
+        if (isset($settings['filePathPattern'])) {
+            $this->pathPattern = $settings['filePathPattern'];
+        }
     }
 
 /**
@@ -56,7 +62,14 @@ class UploadedImageHelper extends AppHelper{
     public function display() {
         if (isset($this->request->data[$this->Model][$this->settings['field']]) && !empty($this->request->data[$this->Model][$this->settings['field']]) && !is_array($this->request->data[$this->Model][$this->settings['field']])) {
 
-            $imagePath = '/files/' . strtolower($this->Model) . '/' . $this->settings['field'] . '/' . $this->request->data[$this->Model][$this->settings['dir']] . '/' . $this->request->data[$this->Model][$this->settings['field']];
+            $imagePath = strtr($this->pathPattern,
+                array(
+                    '{model}' => strtolower($this->Model),
+                    '{field}' => $this->settings['field'],
+                    '{imageDir}' => $this->request->data[$this->Model][$this->settings['dir']],
+                    '{imageFile}' => $this->request->data[$this->Model][$this->settings['field']]
+                )
+            );
 
             $image = $this->settings['label'];
             $image .= $this->Html->link(
@@ -71,8 +84,10 @@ class UploadedImageHelper extends AppHelper{
             $image = '';
         }
 
-        echo $this->Form->input($this->settings['field'], array('type' => 'file', 'before' => $image));
-        echo $this->Form->input($this->settings['dir'], array('type' => 'hidden'));
+        $return = $this->Form->input($this->settings['field'], array('type' => 'file', 'before' => $image));
+        $return .= $this->Form->input($this->settings['dir'], array('type' => 'hidden'));
+
+        return $return;
     }
 
 /**
@@ -84,7 +99,7 @@ class UploadedImageHelper extends AppHelper{
  * @return int A size in pixels
  */
     private function getThumbnailSize($file) {
-        $dimensions = getimagesize(APP.WEBROOT_DIR.$file);
+        $dimensions = getimagesize($file);
         if ($dimensions[0] <= $this->settings['thumbWidth']) {
             return $dimensions[0] . 'px';
         }
