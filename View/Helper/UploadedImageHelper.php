@@ -74,7 +74,7 @@ class UploadedImageHelper extends AppHelper{
             $image = $this->settings['label'];
             $image .= $this->Html->link(
                     $this->Html->image(
-                            $imagePath,
+                            '../' . $imagePath,
                             array('width' => $this->getThumbnailSize($imagePath))
                         ),
                         $imagePath,
