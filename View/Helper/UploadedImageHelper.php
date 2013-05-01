@@ -58,9 +58,31 @@ class UploadedImageHelper extends AppHelper{
 /**
  * Output the formatted image field links and show the existing image resized
  * but with a link to view the original
+ *
+ * @param string $field The name of the image field in the db
+ * @param string $dir The name of the dir field in the db
+ * @param string $label The lable for this output
+ * @param int $thumbWidth Maximum thumbnail width in pixels
+ *
+ * @return type
  */
-    public function display() {
-        if (isset($this->request->data[$this->Model][$this->settings['field']]) && !empty($this->request->data[$this->Model][$this->settings['field']]) && !is_array($this->request->data[$this->Model][$this->settings['field']])) {
+    public function display($field = null, $dir = null, $label = null, $thumbWidth = 200) {
+
+        // Check to see if the defaults have been overridden
+        if ($field === null) {
+            $field = $this->request->data[$this->Model][$this->settings['field']];
+        }
+        if ($dir === null) {
+            $dir = $this->request->data[$this->Model][$this->settings['dir']];
+        }
+        if ($label === null) {
+            $label = $this->request->data[$this->Model][$this->settings['label']];
+        }
+        if ($thumbWidth === null) {
+            $thumbWidth = $this->request->data[$this->Model][$this->settings['thumbWidth']];
+        }
+
+        if (isset($this->request->data[$this->Model][$field]) && !empty($this->request->data[$this->Model][$field]) && !is_array($this->request->data[$this->Model][$field])) {
 
             $imagePath = strtr($this->pathPattern,
                 array(
