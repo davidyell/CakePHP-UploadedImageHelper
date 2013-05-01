@@ -25,4 +25,5 @@ public $helpers = array(
 `echo $this->UploadedImage->display();`
 
 ## Todo
-* Change the helper so that it reads the model configuration to save on configuring it
+* Read the model configuration to save on configuring it  
+* Allow multiple upload fields
