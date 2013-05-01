@@ -3,13 +3,13 @@ This is a quick helper to output a form field for the [Jose Gonzalez Upload plug
 
 ##Requirements
 Cake 2.x  
-Upload plugin - https://github.com/josegonzalez/upload
+Upload plugin - https://github.com/josegonzalez/upload  
 
 ##Installation
 You will need to install the plugin into `app/Plugin/UploadedImage` and then activate it in your `app/Config/bootstrap.php` with `CakePlugin::load('UploadedImage');` unless you are already using `loadAll()`.  
 
 Then add the helper file into your helpers array in your controller.  
-`public $helpers = array('UploadedImage.UploadedImage');`  
+`public $helpers = array('UploadedImage.UploadedImage');`
 
 The helper take some settings, which you can find in the source `$settings` property. These can be overwritten by passing new settings into the helper when you add it to the controller.  
 ```php
@@ -20,5 +20,9 @@ public $helpers = array(
     )
 );
 ```
+
+##Usage
+`echo $this->UploadedImage->display();`
+
 ## Todo
 * Change the helper so that it reads the model configuration to save on configuring it
