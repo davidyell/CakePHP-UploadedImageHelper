@@ -47,8 +47,12 @@ class UploadedImageHelper extends AppHelper{
         if (!empty($settings)) {
             $this->settings = array_merge($this->settings, $settings);
         }
-
-        $this->Model = Inflector::singularize($View->name);
+		
+		if (!isset($settings['model'])) {
+			$this->Model = Inflector::classify($View->name);
+		} else {
+			$this->Model = $settings['model'];
+		}
 
         if (isset($settings['filePathPattern'])) {
             $this->pathPattern = $settings['filePathPattern'];
@@ -64,7 +68,7 @@ class UploadedImageHelper extends AppHelper{
 
             $imagePath = strtr($this->pathPattern,
                 array(
-                    '{model}' => strtolower($this->Model),
+                    '{model}' => Inflector::underscore($this->Model),
                     '{field}' => $this->settings['field'],
                     '{imageDir}' => $this->request->data[$this->Model][$this->settings['dir']],
                     '{imageFile}' => $this->request->data[$this->Model][$this->settings['field']]
