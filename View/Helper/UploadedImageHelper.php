@@ -33,7 +33,7 @@ class UploadedImageHelper extends AppHelper{
         'thumbWidth' => 200
     );
 
-    public $pathPattern = 'files/{model}/{field}/{imageDir}/{imageFile}';
+    public $pathPattern = '/files/{model}/{field}/{imageDir}/{imageFile}';
 
 /**
  * Startup the helper
@@ -103,7 +103,7 @@ class UploadedImageHelper extends AppHelper{
  * @return int A size in pixels
  */
     private function getThumbnailSize($file) {
-        $dimensions = getimagesize($file);
+        $dimensions = getimagesize(Router::fullbaseUrl() . $file);
         if ($dimensions[0] <= $this->settings['thumbWidth']) {
             return $dimensions[0] . 'px';
         }
