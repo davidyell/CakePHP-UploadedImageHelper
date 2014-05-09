@@ -1,6 +1,6 @@
 {
     "name": "davidyell/uploadedimage",
-    "description": "Helper to output the current image and upload field for the Upload pluign",
+    "description": "Helper to output the current image and upload field for the Upload plugin",
     "type": "cakephp-plugin",
     "extra": {
         "installer-name": "UploadedImage"
