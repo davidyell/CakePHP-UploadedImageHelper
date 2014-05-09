@@ -3,7 +3,7 @@
     "description": "Helper to output the current image and upload field for the Upload pluign",
     "type": "cakephp-plugin",
     "extra": {
-        "installer-name": "Sortable"
+        "installer-name": "UploadedImage"
     },
     "authors": [
         {
