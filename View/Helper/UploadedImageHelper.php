@@ -49,11 +49,11 @@ class UploadedImageHelper extends AppHelper{
             $this->settings = array_merge($this->settings, $settings);
         }
 
-		if (!isset($settings['model'])) {
-			$this->Model = Inflector::classify($View->name);
-		} else {
-			$this->Model = $settings['model'];
-		}
+        if (!isset($settings['model'])) {
+            $this->Model = Inflector::classify($View->name);
+        } else {
+            $this->Model = $settings['model'];
+        }
 
         if (isset($settings['filePathPattern'])) {
             $this->pathPattern = $settings['filePathPattern'];
@@ -89,13 +89,13 @@ class UploadedImageHelper extends AppHelper{
             $image = '';
         }
 
-        $fieldOptions = array('type' => 'file', 'before' => $image, 'required' => true);
-        if ($this->settings['required'] === false) {
-            $fieldOptions = array_merge($fieldOptions, ['required' => false])
+        $fieldOptions = array('type' => 'file', 'before' => $image, 'required' => false);
+        if ($this->settings['required']) {
+            $fieldOptions = array_merge($fieldOptions, ['required' => true]);
         }
 
         $return = $this->Form->input($this->settings['field'], $fieldOptions);
-        $return .= $this->Form->input($this->settings['dir'], $array('type' => 'hidden'));
+        $return .= $this->Form->input($this->settings['dir'], array('type' => 'hidden'));
 
         return $return;
     }
