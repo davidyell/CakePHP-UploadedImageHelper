@@ -30,7 +30,8 @@ class UploadedImageHelper extends AppHelper{
         'field' => 'image',
         'dir' => 'image_dir',
         'label' => '<p>Current image</p>',
-        'thumbWidth' => 200
+        'thumbWidth' => 200,
+        'required' => false
     );
 
     public $pathPattern = '/files/{model}/{field}/{imageDir}/{imageFile}';
@@ -47,7 +48,7 @@ class UploadedImageHelper extends AppHelper{
         if (!empty($settings)) {
             $this->settings = array_merge($this->settings, $settings);
         }
-		
+
 		if (!isset($settings['model'])) {
 			$this->Model = Inflector::classify($View->name);
 		} else {
@@ -88,8 +89,13 @@ class UploadedImageHelper extends AppHelper{
             $image = '';
         }
 
-        $return = $this->Form->input($this->settings['field'], array('type' => 'file', 'before' => $image));
-        $return .= $this->Form->input($this->settings['dir'], array('type' => 'hidden'));
+        $fieldOptions = array('type' => 'file', 'before' => $image, 'required' => true);
+        if ($this->settings['required'] === false) {
+            $fieldOptions = array_merge($fieldOptions, ['required' => false])
+        }
+
+        $return = $this->Form->input($this->settings['field'], $fieldOptions);
+        $return .= $this->Form->input($this->settings['dir'], $array('type' => 'hidden'));
 
         return $return;
     }
